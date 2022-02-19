@@ -4,123 +4,25 @@ using System.Linq;
 using System.Threading;
 using System.Diagnostics;
 
-namespace RandomPassword
+namespace Program
 {
-
-    class MikiCalc
+    class Program
     {
-        //Mega-Integer-string (K)Caluculator Intefrace - Miki...
-        //for my son, Miki :-*
-
         static void Main(string[] args)
         {
-            
-            RunCalcTest();
+
+            Miki.Miki.RunCalcTest();
+            //Passwords.Passwords.PassFromDig(); //Good for long testing - Generate 32-char password from Int-string-number and Int-string-number from password
 
         }
+    }
 
-        public static void RunCalcTest()
-        {
+}
 
-            List<string> MyOutputList = new();
-            string[] TestCalc = new string[2];
-            var sw = Stopwatch.StartNew();
-
-            string Dig1 = "9999999999999999999999999999999999999999999999999999999999999999999999999"; 
-            string Dig2 = "999999999";
-
-            Console.WriteLine(Dig1 + "  Length: " + Dig1.Length);
-            Console.WriteLine(Dig2 + "  Length: " + Dig2.Length);
-            List<string> MyOutputListM = new();
-            List<string> MyOutputListA = new();
-
-            //to speedup CPU
-            _ = Stopwatch.StartNew();
-            for (int i = 0; i < 1000; i++)
-            {
-
-                _ = MikiSub(Dig1, Dig2);
-                _ = MikiDiv(Dig1, Dig2);
-                _ = MikiMul(Dig1, Dig2);
-                _ = MikiAdd(Dig1, Dig2);
-
-            }
-
-            Console.WriteLine("++++++++++++++++++++++++++++++");
-            Console.WriteLine("-------ADD-------");
-            sw = Stopwatch.StartNew();
-            MyOutputList = MikiAdd(Dig1, Dig2);
-            sw.Stop();
-            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
-            Console.WriteLine(MyOutputList[0]);
-
-            Console.WriteLine("-----ADD CHECK-----");
-            MyOutputListA = MikiSub(MyOutputList[0], Dig2);
-            Console.WriteLine(MyOutputListA[0]);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(MyOutputListA[0] == Dig1);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("++++++++++++++++++++++++++++++");
-
-
-            Console.WriteLine("-------SUB-------");
-            sw = Stopwatch.StartNew();
-            MyOutputList = MikiSub(Dig1, Dig2);
-            sw.Stop();
-            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
-            Console.WriteLine(MyOutputList[0]);
-
-            Console.WriteLine("-----SUB CHECK-----");
-            MyOutputListA = MikiAdd(MyOutputList[0], Dig2);
-            Console.WriteLine(MyOutputListA[0]);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(MyOutputListA[0] == Dig1);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("++++++++++++++++++++++++++++++");
-
-
-            Console.WriteLine("-------MUL-------");
-            sw = Stopwatch.StartNew();
-            MyOutputList = MikiMul(Dig1, Dig2);
-            sw.Stop();
-            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
-            Console.WriteLine(MyOutputList[0]);
-
-            Console.WriteLine("-----MUL CHECK-----");
-            MyOutputListA = MikiDiv(MyOutputList[0], Dig2);
-            Console.WriteLine(MyOutputListA[0]);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(MyOutputListA[0] == Dig1);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("++++++++++++++++++++++++++++++");
-
-
-            Console.WriteLine("-------DIV-------");
-            sw = Stopwatch.StartNew();
-            MyOutputList = MikiDiv(Dig1, Dig2);
-            sw.Stop();
-            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
-            Console.WriteLine(MyOutputList[0]);
-            Console.WriteLine(MyOutputList[1]);
-
-            Console.WriteLine("-----DIV CHECK-----");
-            MyOutputListM = MikiMul(MyOutputList[0], Dig2);
-            MyOutputListA = MikiAdd(MyOutputListM[0], MyOutputList[1]);
-            Console.WriteLine(MyOutputListA[0]);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(MyOutputListA[0] == Dig1);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("++++++++++++++++++++++++++++++");
-
-            Console.WriteLine("-------POW-------");
-            sw = Stopwatch.StartNew();
-            MyOutputList = MikiPow(Dig1, "10");
-            sw.Stop();
-            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
-            Console.WriteLine(MyOutputList[0]);
-            Console.WriteLine(MyOutputList[1]);
-        }
-
+namespace Passwords
+{
+    class Passwords
+    {
         public static void PassFromDig()
         {
             //generate long string-number and convert to 32-char password
@@ -130,8 +32,8 @@ namespace RandomPassword
             string PassCharCount = "62";
             string PassCharPlaces = "32";
             string IncrementPower = "108"; //108
-            string MaxValue = MikiAdd(MikiPow(PassCharCount, PassCharPlaces)[0], "1")[0];
-            string Increment = MikiPow("3", IncrementPower)[0];
+            string MaxValue = Miki.CalcStrings.Add(Miki.CalcStrings.Pow(PassCharCount, PassCharPlaces)[0], "1")[0];
+            string Increment = Miki.CalcStrings.Pow("3", IncrementPower)[0];
 
             long ElapsSec = 0;
 
@@ -153,7 +55,7 @@ namespace RandomPassword
                 for (int h = 31; h >= 0; h--)
 
                 {
-                    List<string> temp = new(MikiDiv(Xtemp, "62"));
+                    List<string> temp = new(Miki.CalcStrings.Div(Xtemp, "62"));
                     int TempInt = Convert.ToInt32(temp[1]);
 
                     if (TempInt < 10)
@@ -181,7 +83,7 @@ namespace RandomPassword
                 if (Xnew == DigFromPass(Pass) == false) //check if correct
                 { Console.ReadKey(); }
 
-                Xnew = MikiDiv(MikiAdd(Xnew, Increment)[0], MaxValue)[1];
+                Xnew = Miki.CalcStrings.Div(Miki.CalcStrings.Add(Xnew, Increment)[0], MaxValue)[1];
                 Xtemp = Xnew;
 
                 i += 1;
@@ -221,260 +123,163 @@ namespace RandomPassword
                     CharInt = CharDec - 48;
                 }
 
-                TempDig = MikiMul(Convert.ToString(CharInt), MikiPow("62", Convert.ToString(k))[0])[0];
+                TempDig = Miki.CalcStrings.Mul(Convert.ToString(CharInt), Miki.CalcStrings.Pow("62", Convert.ToString(k))[0])[0];
 
-                Dig = MikiAdd(Dig, TempDig)[0];
+                Dig = Miki.CalcStrings.Add(Dig, TempDig)[0];
                 k++;
             }
 
             return Dig;
         }
+    }
 
 
-        public static List<string> MikiAdd(string Dig1Orig, string Dig2Orig)
+
+}
+namespace Miki
+{
+    class Miki
+    {
+        //Mega-Integer-string (K)Caluculator Intefrace - Miki...
+        //for my son, Miki :-*
+
+        
+        public static void RunCalcTest()
         {
+            //MikiAdd, MikiSub, MikiMul - returns [0]-Int-string-Result, [1]-Abs(Int-string-Result)
+            //MikiDiv - returns [0]-Int-string-Result, [1]-Rest from division
+            //MikiPow - returns [0]-Int-string-Result
 
-            List<string> MyOutput = new() { "", "", "" };
+            List<string> MyOutputList = new();
+            string[] TestCalc = new string[2];
+            var sw = Stopwatch.StartNew();
 
-            string ResultSign = "";
-            string Dig1Sign = "";
-            string Dig2Sign = "";
-            string Dig1 = Dig1Orig;
-            string Dig2 = Dig2Orig;
+            string Dig1 = "31543890397977681684285524423227768626815861760032026538";
+            string Dig2 = "17";
 
-            if (Dig1Orig.Substring(0, 1) == "-")
+            Console.WriteLine(Dig1 + "  Length: " + Dig1.Length);
+            Console.WriteLine(Dig2 + "  Length: " + Dig2.Length);
+            List<string> MyOutputListM = new();
+            List<string> MyOutputListA = new();
+
+
+            //to speedup CPU
+            _ = Stopwatch.StartNew();
+            for (int i = 0; i < 1000; i++)
             {
-                Dig1Sign = "-";
-                Dig1 = Dig1Orig[1..];
-            }
-            if (Dig2Orig.Substring(0, 1) == "-")
-            {
-                Dig2Sign = "-";
-                Dig2 = Dig2Orig[1..];
-            }
 
-            if (Dig1 == "0")
-            {
-                MyOutput[0] = Dig2Orig;
-                MyOutput[1] = Dig2;
-                return MyOutput;
-            }
+                _ = CalcStrings.Sub(Dig1, Dig2);
+                _ = CalcStrings.Div(Dig1, Dig2);
+                _ = CalcStrings.Mul(Dig1, Dig2);
+                _ = CalcStrings.Add(Dig1, Dig2);
 
-            if (Dig2 == "0")
-            {
-                MyOutput[0] = Dig1Orig;
-                MyOutput[1] = Dig1;
-                return MyOutput;
             }
 
-            if (Dig1.Length < 29 && Dig2.Length < 29)
-            {
-                decimal IntOutput = Convert.ToDecimal(Dig1Orig) + Convert.ToDecimal(Dig2Orig);
-                MyOutput[0] = Convert.ToString(IntOutput);
-                MyOutput[1] = Convert.ToString(Math.Abs(IntOutput));
-                return MyOutput;
-            }
 
-            if (Dig1Sign == "-" && Dig2Sign == "-")
-            { ResultSign = "-"; }
+            Console.WriteLine("++++++++++++++++++++++++++++++");
+            Console.WriteLine("-------ADD-------");
+            sw = Stopwatch.StartNew();
+            MyOutputList = CalcStrings.Add(Dig1, Dig2);
+            sw.Stop();
+            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
+            Console.WriteLine(MyOutputList[0]);
 
-            var DigsLists = StringsToLongLists(Dig1, Dig2, 18);
+            Console.WriteLine("-----ADD CHECK-----");
+            MyOutputListA = CalcStrings.Sub(MyOutputList[0], Dig2);
+            Console.WriteLine(MyOutputListA[0]);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(MyOutputListA[0] == Dig1);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("++++++++++++++++++++++++++++++");
 
-            List<long> Dig1List = DigsLists[0];
-            List<long> Dig2List = DigsLists[1];
 
-            long MyDiv = 1000000000000000000;
+            Console.WriteLine("-------SUB-------");
+            sw = Stopwatch.StartNew();
+            MyOutputList = CalcStrings.Sub(Dig1, Dig2);
+            sw.Stop();
+            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
+            Console.WriteLine(MyOutputList[0]);
 
-            int DigBiggerTemp = GetDigListBigger(Dig1List, Dig2List);
+            Console.WriteLine("-----SUB CHECK-----");
+            MyOutputListA = CalcStrings.Add(MyOutputList[0], Dig2);
+            Console.WriteLine(MyOutputListA[0]);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(MyOutputListA[0] == Dig1);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("++++++++++++++++++++++++++++++");
 
-            if (Dig1Sign == "-" && Dig2Sign != "-")
-            {
-                MyOutput[1] = LongListToString(MikiListSub(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
-                if (DigBiggerTemp == 1)
-                { ResultSign = "-"; }
-                MyOutput[0] = ResultSign + MyOutput[1];
-                return MyOutput;
-            }
 
-            if (Dig1Sign != "-" && Dig2Sign == "-")
-            {
-                MyOutput[1] = LongListToString(MikiListSub(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
-                if (DigBiggerTemp == 2)
-                { ResultSign = "-"; }
-                MyOutput[0] = ResultSign + MyOutput[1];
-                return MyOutput;
-            }
+            Console.WriteLine("-------MUL-------");
+            sw = Stopwatch.StartNew();
+            MyOutputList = CalcStrings.Mul(Dig1, Dig2);
+            sw.Stop();
+            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
+            Console.WriteLine(MyOutputList[0]);
 
-            MyOutput[1] = LongListToString(MikiListAdd(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+            Console.WriteLine("-----MUL CHECK-----");
+            MyOutputListA = CalcStrings.Div(MyOutputList[0], Dig2);
+            Console.WriteLine(MyOutputListA[0]);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(MyOutputListA[0] == Dig1);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("++++++++++++++++++++++++++++++");
 
-            if (MyOutput[1] == "")
-            {
-                MyOutput[1] = "0";
-            }
 
-            MyOutput[0] = ResultSign + MyOutput[1];
+            Console.WriteLine("-------DIV-------");
+            sw = Stopwatch.StartNew();
+            MyOutputList = CalcStrings.Div(Dig1, Dig2);
+            sw.Stop();
+            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
+            Console.WriteLine(MyOutputList[0]);
+            Console.WriteLine(MyOutputList[1]);
 
-            return MyOutput;
+            Console.WriteLine("-----DIV CHECK-----");
+            MyOutputListM = CalcStrings.Mul(MyOutputList[0], Dig2);
+            MyOutputListA = CalcStrings.Add(MyOutputListM[0], MyOutputList[1]);
+            Console.WriteLine(MyOutputListA[0]);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(MyOutputListA[0] == Dig1);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("++++++++++++++++++++++++++++++");
+
+            Console.WriteLine("-------POW-------");
+            sw = Stopwatch.StartNew();
+            MyOutputList = CalcStrings.Pow(Dig1, "10");
+            sw.Stop();
+            Console.WriteLine(string.Format("Ticks:  {0}    ms:  {1}", sw.ElapsedTicks, sw.ElapsedMilliseconds));
+            Console.WriteLine(MyOutputList[0]);
+            Console.WriteLine(MyOutputList[1]);
         }
 
-        public static List<string> MikiSub(string Dig1Orig, string Dig2Orig)
+        
+
+
+        
+
+        
+
+    }
+
+    
+    public static class CalcStringExt
+    {
+        public static string Left(this string @this, int count)
         {
-
-            List<string> MyOutput = new() { "", "", "" };
-            string ResultSign = "";
-            string Dig1Sign = "";
-            string Dig2Sign = "";
-            string Dig1 = Dig1Orig;
-            string Dig2 = Dig2Orig;
-
-            if (Dig1.Substring(0, 1) == "-")
+            if (@this.Length <= count)
             {
-                Dig1Sign = "-";
-                Dig1 = Dig1Orig[1..];
+                return @this;
             }
-            if (Dig2.Substring(0, 1) == "-")
+            else
             {
-                Dig2Sign = "-";
-                Dig2 = Dig2Orig[1..];
+                return @this.Substring(0, count);
             }
-
-            if (Dig1 == "0")
-            {
-                if (Dig2Sign == "-")
-                {
-                    MyOutput[0] = Dig2;
-                    MyOutput[1] = Dig2;
-                }
-                else
-                {
-                    MyOutput[0] = "-" + Dig2;
-                    MyOutput[1] = Dig2;
-                }
-                return MyOutput;
-            }
-
-            if (Dig2 == "0")
-            {
-                MyOutput[0] = Dig1Orig;
-                MyOutput[1] = Dig1;
-                return MyOutput;
-            }
-
-            if (Dig1.Length < 29 && Dig2.Length < 29)
-            {
-                decimal IntOutput = Convert.ToDecimal(Dig1Orig) - Convert.ToDecimal(Dig2Orig);
-                MyOutput[0] = Convert.ToString(IntOutput);
-                MyOutput[1] = Convert.ToString(Math.Abs(IntOutput));
-                return MyOutput;
-            }
-
-            var DigsLists = StringsToLongLists(Dig1, Dig2, 18);
-
-            List<long> Dig1List = DigsLists[0];
-            List<long> Dig2List = DigsLists[1];
-            long MyDiv = 1000000000000000000;
-
-            int DigBiggerTemp = GetDigListBigger(Dig1List, Dig2List);
-
-            if (Dig1Sign == "-" && Dig2Sign != "-")
-            {
-                MyOutput[1] = LongListToString(MikiListAdd(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
-                ResultSign = "-";
-                MyOutput[0] = ResultSign + MyOutput[1];
-                return MyOutput;
-            }
-
-            if (Dig1Sign != "-" && Dig2Sign == "-")
-            {
-                MyOutput[1] = LongListToString(MikiListAdd(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
-                ResultSign = "";
-                MyOutput[0] = ResultSign + MyOutput[1];
-                return MyOutput;
-            }
-
-            if (Dig1Sign != "-" && Dig2Sign != "-")
-            {
-                if (DigBiggerTemp == 2)
-                { ResultSign = "-"; }
-            }
-
-            if (Dig1Sign == "-" && Dig2Sign == "-")
-            {
-                if (DigBiggerTemp == 1)
-                { ResultSign = "-"; }
-            }
-
-            MyOutput[1] = LongListToString(MikiListSub(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
-
-            if (MyOutput[1] == "")
-            { MyOutput[1] = "0"; }
-
-            MyOutput[0] = ResultSign + MyOutput[1];
-
-            return MyOutput;
         }
+    }
 
-        public static List<string> MikiMul(string Dig1Orig, string Dig2Orig)
-        {
+    public static class CalcLists
+    {
 
-            List<string> MyOutput = new() { "", "", "" };
-            string ResultSign = "";
-            string Dig1Sign = "";
-            string Dig2Sign = "";
-            string Dig1 = Dig1Orig;
-            string Dig2 = Dig2Orig;
-
-            if (Dig1.Substring(0, 1) == "-")
-            {
-                Dig1Sign = "-";
-                Dig1 = Dig1Orig[1..];
-            }
-            if (Dig2.Substring(0, 1) == "-")
-            {
-                Dig2Sign = "-";
-                Dig2 = Dig2Orig[1..];
-            }
-
-            if (Dig2 == "0" || Dig2 == "0")
-            {
-                MyOutput[0] = "0";
-                MyOutput[1] = "0";
-                return MyOutput;
-            }
-
-            if (Dig1.Length + Dig2.Length < 29)
-            {
-                decimal IntOutput = Convert.ToDecimal(Dig1Orig) * Convert.ToDecimal(Dig2Orig);
-                MyOutput[0] = Convert.ToString(IntOutput);
-                MyOutput[1] = Convert.ToString(Math.Abs(IntOutput));
-                return MyOutput;
-            }
-
-            if (Dig1Sign != Dig2Sign)
-            {
-                ResultSign = "-";
-            }
-
-            var DigsLists = StringsToLongLists(Dig1, Dig2, 9);
-
-            List<long> Dig1List = DigsLists[0];
-            List<long> Dig2List = DigsLists[1];
-
-            long MyDiv = 1000000000;
-
-            MyOutput[1] = LongListToString(MikiListMul(Dig1List, Dig2List, MyDiv, 3), "000000000");
-
-            if (MyOutput[1] == "")
-            {
-                MyOutput[1] = "0";
-            }
-
-            MyOutput[0] = ResultSign + MyOutput[1];
-
-            return MyOutput;
-        }
-
-        public static List<long> MikiListAdd(List<long> Dig1List, List<long> Dig2List, long MyDiv, int BiggerList)
+        public static List<long> Add(List<long> Dig1List, List<long> Dig2List, long MyDiv, int BiggerList)
         {
 
             if (Dig1List.Count == 1 && Dig1List[0] == 0)
@@ -491,7 +296,7 @@ namespace RandomPassword
 
             if (BiggerList == 3)//Change Lists make DigList1Temp bigger
             {
-                if (GetDigListBigger(Dig1List, Dig2List) == 2)
+                if (CalcCompare.ListBigger(Dig1List, Dig2List) == 2)
                 {
                     Dig1ListTemp = new(Dig2List);
                     Dig2ListTemp = new(Dig1List);
@@ -548,7 +353,7 @@ namespace RandomPassword
             return MyOutput;
         }
 
-        public static List<long> MikiListSub(List<long> Dig1List, List<long> Dig2List, long MyDiv, int BiggerList)
+        public static List<long> Sub(List<long> Dig1List, List<long> Dig2List, long MyDiv, int BiggerList)
         {
             if (Dig1List.Count == 1 && Dig1List[0] == 0)
             { return Dig2List; }
@@ -562,7 +367,7 @@ namespace RandomPassword
 
             if (BiggerList == 3)//Change Lists make DigList1Temp bigger
             {
-                if (GetDigListBigger(Dig1ListTemp, Dig2ListTemp) == 2)
+                if (CalcCompare.ListBigger(Dig1ListTemp, Dig2ListTemp) == 2)
                 {
                     Dig1ListTemp = new(Dig2List);
                     Dig2ListTemp = new(Dig1List);
@@ -613,7 +418,7 @@ namespace RandomPassword
             return MyOutput;
         }
 
-        public static List<long> MikiListMul(List<long> Dig1List, List<long> Dig2List, long MyDiv, int BiggerList)
+        public static List<long> Mul(List<long> Dig1List, List<long> Dig2List, long MyDiv, int BiggerList)
         {
             if (Dig1List.Count == 1 && Dig1List[0] == 1)
             { return Dig2List; }
@@ -627,7 +432,7 @@ namespace RandomPassword
 
             if (BiggerList == 3)//Change Lists make DigList1Temp bigger
             {
-                if (GetDigListBigger(Dig1ListTemp, Dig2ListTemp) == 2)
+                if (CalcCompare.ListBigger(Dig1ListTemp, Dig2ListTemp) == 2)
                 {
                     Dig1ListTemp = new(Dig2List);
                     Dig2ListTemp = new(Dig1List);
@@ -674,8 +479,307 @@ namespace RandomPassword
             return ResultList;
         }
 
+    }
 
-        public static List<string> MikiDiv(string Dig1Orig, string Dig2Orig)
+    public class CalcStrings
+    {
+        public static List<string> Add(string Dig1Orig, string Dig2Orig)
+        {
+
+            List<string> MyOutput = new() { "", "", "" };
+
+            string ResultSign = "";
+            string Dig1Sign = "";
+            string Dig2Sign = "";
+            string Dig1 = Dig1Orig;
+            string Dig2 = Dig2Orig;
+
+            if (Dig1Orig.Substring(0, 1) == "-")
+            {
+                Dig1Sign = "-";
+                Dig1 = Dig1Orig[1..];
+            }
+            if (Dig2Orig.Substring(0, 1) == "-")
+            {
+                Dig2Sign = "-";
+                Dig2 = Dig2Orig[1..];
+            }
+
+            if (Dig1 == "0")
+            {
+                MyOutput[0] = Dig2Orig;
+                MyOutput[1] = Dig2;
+                return MyOutput;
+            }
+
+            if (Dig2 == "0")
+            {
+                MyOutput[0] = Dig1Orig;
+                MyOutput[1] = Dig1;
+                return MyOutput;
+            }
+
+            if (Dig1.Length < 29 && Dig2.Length < 29)
+            {
+                decimal IntOutput = Convert.ToDecimal(Dig1Orig) + Convert.ToDecimal(Dig2Orig);
+                MyOutput[0] = Convert.ToString(IntOutput);
+                MyOutput[1] = Convert.ToString(Math.Abs(IntOutput));
+                return MyOutput;
+            }
+
+            if (Dig1Sign == "-" && Dig2Sign == "-")
+            { ResultSign = "-"; }
+
+            var DigsLists = CalcConvert.StringsToLongLists(Dig1, Dig2, 18);
+
+            List<long> Dig1List = DigsLists[0];
+            List<long> Dig2List = DigsLists[1];
+
+            long MyDiv = 1000000000000000000;
+
+            int DigBiggerTemp = CalcCompare.ListBigger(Dig1List, Dig2List);
+
+            if (Dig1Sign == "-" && Dig2Sign != "-")
+            {
+                MyOutput[1] = CalcConvert.LongListToString(CalcLists.Sub(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+                if (DigBiggerTemp == 1)
+                { ResultSign = "-"; }
+                MyOutput[0] = ResultSign + MyOutput[1];
+                return MyOutput;
+            }
+
+            if (Dig1Sign != "-" && Dig2Sign == "-")
+            {
+                MyOutput[1] = CalcConvert.LongListToString(CalcLists.Sub(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+                if (DigBiggerTemp == 2)
+                { ResultSign = "-"; }
+                MyOutput[0] = ResultSign + MyOutput[1];
+                return MyOutput;
+            }
+
+            MyOutput[1] = CalcConvert.LongListToString(CalcLists.Add(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+
+            if (MyOutput[1] == "")
+            {
+                MyOutput[1] = "0";
+            }
+
+            MyOutput[0] = ResultSign + MyOutput[1];
+
+            return MyOutput;
+        }
+
+        public static List<string> Sub(string Dig1Orig, string Dig2Orig)
+        {
+
+            List<string> MyOutput = new() { "", "", "" };
+            string ResultSign = "";
+            string Dig1Sign = "";
+            string Dig2Sign = "";
+            string Dig1 = Dig1Orig;
+            string Dig2 = Dig2Orig;
+
+            if (Dig1.Substring(0, 1) == "-")
+            {
+                Dig1Sign = "-";
+                Dig1 = Dig1Orig[1..];
+            }
+            if (Dig2.Substring(0, 1) == "-")
+            {
+                Dig2Sign = "-";
+                Dig2 = Dig2Orig[1..];
+            }
+
+            if (Dig1 == "0")
+            {
+                if (Dig2Sign == "-")
+                {
+                    MyOutput[0] = Dig2;
+                    MyOutput[1] = Dig2;
+                }
+                else
+                {
+                    MyOutput[0] = "-" + Dig2;
+                    MyOutput[1] = Dig2;
+                }
+                return MyOutput;
+            }
+
+            if (Dig2 == "0")
+            {
+                MyOutput[0] = Dig1Orig;
+                MyOutput[1] = Dig1;
+                return MyOutput;
+            }
+
+            if (Dig1.Length < 29 && Dig2.Length < 29)
+            {
+                decimal IntOutput = Convert.ToDecimal(Dig1Orig) - Convert.ToDecimal(Dig2Orig);
+                MyOutput[0] = Convert.ToString(IntOutput);
+                MyOutput[1] = Convert.ToString(Math.Abs(IntOutput));
+                return MyOutput;
+            }
+
+            var DigsLists = CalcConvert.StringsToLongLists(Dig1, Dig2, 18);
+
+            List<long> Dig1List = DigsLists[0];
+            List<long> Dig2List = DigsLists[1];
+            long MyDiv = 1000000000000000000;
+
+            int DigBiggerTemp = CalcCompare.ListBigger(Dig1List, Dig2List);
+
+            if (Dig1Sign == "-" && Dig2Sign != "-")
+            {
+                MyOutput[1] = CalcConvert.LongListToString(CalcLists.Add(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+                ResultSign = "-";
+                MyOutput[0] = ResultSign + MyOutput[1];
+                return MyOutput;
+            }
+
+            if (Dig1Sign != "-" && Dig2Sign == "-")
+            {
+                MyOutput[1] = CalcConvert.LongListToString(CalcLists.Add(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+                ResultSign = "";
+                MyOutput[0] = ResultSign + MyOutput[1];
+                return MyOutput;
+            }
+
+            if (Dig1Sign != "-" && Dig2Sign != "-")
+            {
+                if (DigBiggerTemp == 2)
+                { ResultSign = "-"; }
+            }
+
+            if (Dig1Sign == "-" && Dig2Sign == "-")
+            {
+                if (DigBiggerTemp == 1)
+                { ResultSign = "-"; }
+            }
+
+            MyOutput[1] = CalcConvert.LongListToString(CalcLists.Sub(Dig1List, Dig2List, MyDiv, DigBiggerTemp), "000000000000000000");
+
+            if (MyOutput[1] == "")
+            { MyOutput[1] = "0"; }
+
+            MyOutput[0] = ResultSign + MyOutput[1];
+
+            return MyOutput;
+        }
+
+        public static List<string> Mul(string Dig1Orig, string Dig2Orig)
+        {
+
+            List<string> MyOutput = new() { "", "", "" };
+            string ResultSign = "";
+            string Dig1Sign = "";
+            string Dig2Sign = "";
+            string Dig1 = Dig1Orig;
+            string Dig2 = Dig2Orig;
+
+            if (Dig1.Substring(0, 1) == "-")
+            {
+                Dig1Sign = "-";
+                Dig1 = Dig1Orig[1..];
+            }
+            if (Dig2.Substring(0, 1) == "-")
+            {
+                Dig2Sign = "-";
+                Dig2 = Dig2Orig[1..];
+            }
+
+            if (Dig2 == "0" || Dig2 == "0")
+            {
+                MyOutput[0] = "0";
+                MyOutput[1] = "0";
+                return MyOutput;
+            }
+
+            if (Dig1.Length + Dig2.Length < 29)
+            {
+                decimal IntOutput = Convert.ToDecimal(Dig1Orig) * Convert.ToDecimal(Dig2Orig);
+                MyOutput[0] = Convert.ToString(IntOutput);
+                MyOutput[1] = Convert.ToString(Math.Abs(IntOutput));
+                return MyOutput;
+            }
+
+            if (Dig1Sign != Dig2Sign)
+            {
+                ResultSign = "-";
+            }
+
+            var DigsLists = CalcConvert.StringsToLongLists(Dig1, Dig2, 9);
+
+            List<long> Dig1List = DigsLists[0];
+            List<long> Dig2List = DigsLists[1];
+
+            long MyDiv = 1000000000;
+
+            MyOutput[1] = CalcConvert.LongListToString(CalcLists.Mul(Dig1List, Dig2List, MyDiv, 3), "000000000");
+
+            if (MyOutput[1] == "")
+            {
+                MyOutput[1] = "0";
+            }
+
+            MyOutput[0] = ResultSign + MyOutput[1];
+
+            return MyOutput;
+        }
+
+        public static List<string> Pow(string Dig1Orig, string Dig2Orig)
+        {
+            string Dig1 = Dig1Orig;
+            string Dig2 = Dig2Orig;
+            string Dig1Sign = "";
+            string Dig2Sign = "";
+
+            List<string> MyOutput = new() { Dig1, "", "" };
+            List<long> MyPowerList = new() { 1 };
+            List<long> MyPowerListAdd = new() { 1 };
+
+            long MyDivM = 1000000000;
+            long MyDivA = 1000000000000000000;
+
+            if (Dig1Orig.Substring(0, 1) == "-")
+            {
+                Dig1Sign = "-";
+                Dig1 = Dig1Orig[1..];
+            }
+            if (Dig2Orig.Substring(0, 1) == "-")
+            {
+                Dig2Sign = "-";
+                Dig2 = Dig2Orig[1..];
+            }
+
+            //You can write condition to calculate power with proper result sign
+            //or remember, if -Dig1Orig and Dig2Orig % 2 != 0 ResultSign = "-"
+
+            if (Dig2 == "0")
+            {
+                MyOutput[0] = "1";
+                return MyOutput;
+            }
+
+            if (Dig2 == "1")
+            {
+                MyOutput[0] = Dig1Orig;
+                return MyOutput;
+            }
+
+            List<long> Dig1List = CalcConvert.StringToLongList(Dig1, 9)[0];
+            List<long> Dig2List = CalcConvert.StringToLongList(Dig2, 18)[0];
+            List<long> MyOutputList = Dig1List;
+
+            while (CalcCompare.ListBigger(MyPowerList, Dig2List) == 2)
+            {
+                MyOutputList = CalcLists.Mul(MyOutputList, Dig1List, MyDivM, 1); //first pass list are the same, next MyOutputList is bigger, so 1 is good option
+                MyPowerList = CalcLists.Add(MyPowerList, MyPowerListAdd, MyDivA, 1); //first pass list are the same, next MyOutputList is bigger, so 1 is good option
+            }
+            MyOutput[0] = CalcConvert.LongListToString(MyOutputList, "000000000");
+            return MyOutput;
+        }
+
+        public static List<string> Div(string Dig1Orig, string Dig2Orig)
         {
             //most difficult part of job
             List<string> MyOutput = new() { "", "", "" };
@@ -733,22 +837,25 @@ namespace RandomPassword
 
             if (Dig1Length < 29 && Dig2Length < 29)
             {
-                decimal DecModOutput = Convert.ToDecimal(Dig1Orig) % Convert.ToDecimal(Dig2Orig);
-                decimal DecDecOutput = ((Convert.ToDecimal(Dig1Orig) - DecModOutput) / Convert.ToDecimal(Dig2Orig));
+                decimal Dig1Dec = Convert.ToDecimal(Dig1Orig);
+                decimal Dig2Dec = Convert.ToDecimal(Dig2Orig);
+                decimal TempRestDec = Dig1Dec % Dig2Dec;
+                //decimal DecModOutput = Convert.ToDecimal(Dig1Orig) % Convert.ToDecimal(Dig2Orig);
+                decimal DecDecOutput = ((Dig1Dec - TempRestDec) / Dig2Dec);
                 MyOutput[0] = Convert.ToString(DecDecOutput);
-                MyOutput[1] = Convert.ToString(DecModOutput);
+                MyOutput[1] = Convert.ToString(TempRestDec);
                 return MyOutput;
             }
 
             string Dig1TempS = Dig1;
             string Dig2TempS = Dig2;
 
-            var DigsList = StringsToLongLists(Dig1TempS, Dig2TempS, 18);
+            var DigsList = CalcConvert.StringsToLongLists(Dig1TempS, Dig2TempS, 18);
             List<long> Dig1List = DigsList[0];
             List<long> Dig2OrigList = DigsList[1]; //It is needed for looping, must be still the same
             List<long> Dig2List = new(Dig2OrigList);
 
-            int BiggerList = GetDigListBigger(Dig1List, Dig2OrigList);
+            int BiggerList = CalcCompare.ListBigger(Dig1List, Dig2OrigList);
 
             if (Dig1Length == Dig2Length)
             {
@@ -784,92 +891,109 @@ namespace RandomPassword
 
                 while (BiggerList < 2)
                 {
-                    //solution "safe multiplier"
-                    //Two important cases, 
-                    //                     1 - first digits of MyOutput[0] are bigger or the same
-                    //                     2 - first digits of MyOutput[0] are smaller then first digits of Dig1,
-
-                    long FirstDigsDig1Long = Convert.ToInt64(FirstDigsDig1String.Left(18));
-
                     string TempMultiplierS = "";
-                    string AddZeros = "";
-                    //Here we can't calculate Dig2TempS as list, because of MyDiv differences betwen Add and Mul
-                    if (FirstDigsDig1Long >= First18DigDig2) //FirstDig1 >= FirstDig2
+
+                    if (MyOutput[0].Length < 29 && Dig2TempS.Length < 29)
                     {
-                        long TempMultiplier = (FirstDigsDig1Long / First18DigDig2);
-                        if (TempMultiplier > 2) //change multiple subtraction to one multiplication
-                        {
-                            TempMultiplier -= 1; //for safe
-                            TempMultiplierS = Convert.ToString(TempMultiplier);
-                            Dig2TempS = MikiMul(Dig2TempS, TempMultiplierS)[0];
-                        }
-                        else
-                        {
-                            TempMultiplier = 1;
-                            TempMultiplierS = Convert.ToString(TempMultiplier);
-                        }
+                        decimal Dig1Dec = Convert.ToDecimal(MyOutput[0]);
+                        decimal Dig2Dec = Convert.ToDecimal(Dig2);
+                        decimal TempRestDec = Dig1Dec % Dig2Dec;
+                        decimal TempMultiplierDec = (Dig1Dec - TempRestDec) / Dig2Dec;
+                        Dig2TempS = Convert.ToString(Dig2Dec * TempMultiplierDec);
+                        TempMultiply = Convert.ToString(TempMultiplierDec);
 
-                        //adding Zeros to make the same length, for safe one zero less
-                        if (MyOutput[0].Length > Dig2TempS.Length)
-                        {
-                            AddZeros = new('0', (MyOutput[0].Length - Dig2TempS.Length) - 1);
-                            Dig2TempS += AddZeros;
-                        }
-
-                        //and one more zero if we can
-                        if (GetDigBigger(MyOutput[0], Dig2TempS + "0") != 2)
-                        {
-                            Dig2TempS += "0";
-                            TempMultiplierS += "0";
-                        }
-
-                        TempMultiply = TempMultiplierS + AddZeros; //and multiply TempMultiply by power of 10
                     }
-                    else //FirstDig1 < FirstDig2
+                    else
                     {
-                        //we must take one digit less then First18DigMyOutput
-                        long TempMultiplier = (FirstDigsDig1Long / First17DigDig2);
-                        if (TempMultiplier > 2) //change multiple subtraction to one multiplication
-                        {
-                            TempMultiplier -= 1; //for safe
-                            TempMultiplierS = Convert.ToString(TempMultiplier);
-                            Dig2TempS = MikiMul(Dig2TempS, TempMultiplierS)[0];
-                        }
-                        else
-                        {
-                            TempMultiplier = 1;
-                            TempMultiplierS = Convert.ToString(TempMultiplier);
-                        }
 
-                        //adding Zeros to make the same length, for safe one zero less
-                        if (MyOutput[0].Length > Dig2TempS.Length)
-                        {
-                            AddZeros = new('0', (MyOutput[0].Length - Dig2TempS.Length) - 1);
-                            Dig2TempS += AddZeros;
-                        }
+                        //solution "safe multiplier"
+                        //Two important cases, 
+                        //                     1 - first digits of MyOutput[0] are bigger or the same
+                        //                     2 - first digits of MyOutput[0] are smaller then first digits of Dig1,
 
-                        //and one more zero if we can
-                        if (GetDigBigger(MyOutput[0], Dig2TempS + "0") != 2)
-                        {
-                            Dig2TempS += "0";
-                            TempMultiplierS += "0";
-                        }
+                        long FirstDigsDig1Long = Convert.ToInt64(FirstDigsDig1String.Left(18));
 
 
-                        TempMultiply = TempMultiplierS + AddZeros; //and multiply TempMultiply by power of 10
+                        string AddZeros = "";
+                        //Here we can't calculate Dig2TempS as list, because of MyDiv differences betwen Add and Mul
+                        if (FirstDigsDig1Long >= First18DigDig2) //FirstDig1 >= FirstDig2
+                        {
+                            long TempMultiplier = (FirstDigsDig1Long / First18DigDig2);
+                            if (TempMultiplier > 2) //change multiple subtraction to one multiplication
+                            {
+                                TempMultiplier -= 1; //for safe
+                                TempMultiplierS = Convert.ToString(TempMultiplier);
+                                Dig2TempS = CalcStrings.Mul(Dig2TempS, TempMultiplierS)[0];
+                            }
+                            else
+                            {
+                                TempMultiplier = 1;
+                                TempMultiplierS = Convert.ToString(TempMultiplier);
+                            }
+
+                            //adding Zeros to make the same length, for safe one zero less
+                            if (MyOutput[0].Length > Dig2TempS.Length)
+                            {
+                                AddZeros = new('0', (MyOutput[0].Length - Dig2TempS.Length) - 1);
+                                Dig2TempS += AddZeros;
+                            }
+
+                            //and one more zero if we can
+                            if (CalcCompare.StringBigger(MyOutput[0], Dig2TempS + "0") != 2)
+                            {
+                                Dig2TempS += "0";
+                                TempMultiplierS += "0";
+                            }
+
+                            TempMultiply = TempMultiplierS + AddZeros; //and multiply TempMultiply by power of 10
+                        }
+                        else //FirstDig1 < FirstDig2
+                        {
+                            //we must take one digit less then First18DigMyOutput
+                            long TempMultiplier = (FirstDigsDig1Long / First17DigDig2);
+                            if (TempMultiplier > 2) //change multiple subtraction to one multiplication
+                            {
+                                TempMultiplier -= 1; //for safe
+                                TempMultiplierS = Convert.ToString(TempMultiplier);
+                                Dig2TempS = CalcStrings.Mul(Dig2TempS, TempMultiplierS)[0];
+                            }
+                            else
+                            {
+                                TempMultiplier = 1;
+                                TempMultiplierS = Convert.ToString(TempMultiplier);
+                            }
+
+                            //adding Zeros to make the same length, for safe one zero less
+                            if (MyOutput[0].Length > Dig2TempS.Length)
+                            {
+                                AddZeros = new('0', (MyOutput[0].Length - Dig2TempS.Length) - 1);
+                                Dig2TempS += AddZeros;
+                            }
+
+                            //and one more zero if we can
+                            if (CalcCompare.StringBigger(MyOutput[0], Dig2TempS + "0") != 2)
+                            {
+                                Dig2TempS += "0";
+                                TempMultiplierS += "0";
+                            }
+
+
+                            TempMultiply = TempMultiplierS + AddZeros; //and multiply TempMultiply by power of 10
+                        }
+
                     }
 
                     //now we can calculate on list
                     //make lists for subtraction. It's better to work on list, because sometimes "while" subtraction needs more than one loop
                     //this is how we can avoid string-list-string conversions in MikiSub and MikiAdd
-                    DigsList = StringsToLongLists(TempMultiply, Dig2TempS, 18);
+                    DigsList = CalcConvert.StringsToLongLists(TempMultiply, Dig2TempS, 18);
                     Dig2List = DigsList[1];
                     List<long> TempMultiplyList = new(DigsList[0]);
 
-                    while (GetDigListBigger(Dig1List, Dig2List) != 2) //subtracting lists and adding TempMultiply as list to TempMultiplyList
+                    while (CalcCompare.ListBigger(Dig1List, Dig2List) != 2) //subtracting lists and adding TempMultiply as list to TempMultiplyList
                     {
-                        Dig1List = MikiListSub(Dig1List, Dig2List, MyDiv, 1); //Here Dig1List can be bigger or equal Dig2List, so 1 is the good option
-                        MultiplyList = new(MikiListAdd(MultiplyList, TempMultiplyList, MyDiv, 3));//MultiplyList will be begger after first pass
+                        Dig1List = CalcLists.Sub(Dig1List, Dig2List, MyDiv, 1); //Here Dig1List can be bigger or equal Dig2List, so 1 is the good option
+                        MultiplyList = new(CalcLists.Add(MultiplyList, TempMultiplyList, MyDiv, 3));//MultiplyList will be begger after first pass
                     }
 
 
@@ -877,7 +1001,7 @@ namespace RandomPassword
                     //Now, for next loop, we need Dig1List as string
                     //MultiplyList can stay as list in this loop
                     //This way we can stay (partially) in lists calculation concept in this loop
-                    MyOutput[0] = LongListToString(Dig1List, "000000000000000000"); //create strings from list after repeated subtractions (Temporary rest)
+                    MyOutput[0] = CalcConvert.LongListToString(Dig1List, "000000000000000000"); //create strings from list after repeated subtractions (Temporary rest)
 
                     //and the first 18 digits from Temporary rest are needed
                     FirstDigsDig1String = Convert.ToString(MyOutput[0].Left(18));
@@ -885,13 +1009,13 @@ namespace RandomPassword
                     Dig2TempS = Dig2;
 
                     //And we must check if we can break calculation. Checking is "time waster", it's the best place for it
-                    BiggerList = GetDigListBigger(Dig1List, Dig2OrigList);
+                    BiggerList = CalcCompare.ListBigger(Dig1List, Dig2OrigList);
                     if (BiggerList == 2) { break; }
 
                 }
 
                 //Now it' done, we can convert MultiplyList to (string)Multiply
-                Multiply = LongListToString(MultiplyList, "000000000000000000"); //Temporary Result(Quotient) //create strings from list after repeated subtractions
+                Multiply = CalcConvert.LongListToString(MultiplyList, "000000000000000000"); //Temporary Result(Quotient) //create strings from list after repeated subtractions
 
                 //and change places of results
                 MyOutput[1] = MyOutput[0]; //Rest
@@ -904,7 +1028,7 @@ namespace RandomPassword
                 //propably not nedded, but to avoid incomplete subtraction
                 if (MyOutput[1] == Dig2)
                 {
-                    MyOutput = MikiAdd(MyOutput[0], "1");
+                    MyOutput = CalcStrings.Add(MyOutput[0], "1");
                     MyOutput[1] = "0";
                 }
                 //add proper sign for quotient and rest (REST NOT MODULO)
@@ -917,49 +1041,11 @@ namespace RandomPassword
             return MyOutput;
         }
 
+    }
 
-
-
-        public static List<string> MikiPow(string Dig1Orig, string Dig2Orig)
-        {
-            string Dig1 = Dig1Orig;
-            string Dig2 = Dig2Orig;
-            List<string> MyOutput = new() { Dig1, "", "" };
-            List<long> MyPowerList = new() { 1 };
-            List<long> MyPowerListAdd = new() { 1 };
-
-            long MyDivM = 1000000000;
-            long MyDivA = 1000000000000000000;
-
-            //You can write condition to calculate power with proper result sign
-            //or remember, if -Dig1Orig and Dig2Orig % 2 != 0 ResultSign = "-"
-
-            if (Dig2 == "0")
-            {
-                MyOutput[0] = "1";
-                return MyOutput;
-            }
-
-            if (Dig2 == "1")
-            {
-                MyOutput[0] = Dig1Orig;
-                return MyOutput;
-            }
-
-            List<long> Dig1List = StringToLongList(Dig1, 9)[0];
-            List<long> Dig2List = StringToLongList(Dig2, 18)[0];
-            List<long> MyOutputList = Dig1List;
-
-            while (GetDigListBigger(MyPowerList, Dig2List) == 2)
-            {
-                MyOutputList = MikiListMul(MyOutputList, Dig1List, MyDivM, 1); //first pass list are the same, next MyOutputList is bigger, so 1 is good option
-                MyPowerList = MikiListAdd(MyPowerList, MyPowerListAdd, MyDivA, 1); //first pass list are the same, next MyOutputList is bigger, so 1 is good option
-            }
-            MyOutput[0] = LongListToString(MyOutputList, "000000000");
-            return MyOutput;
-        }
-
-        public static int GetDigBigger(string Dig1Orig, string Dig2Orig)
+    class CalcCompare
+    {
+        public static int StringBigger(string Dig1Orig, string Dig2Orig)
         {
 
             long DigsDiff = Dig1Orig.Length - Dig2Orig.Length;
@@ -975,7 +1061,7 @@ namespace RandomPassword
                     if (Dig1Orig == Dig2Orig)
                     { return 0; }
 
-                    var ListTest = StringsToLongLists(Dig1Orig, Dig2Orig, 18);
+                    var ListTest = CalcConvert.StringsToLongLists(Dig1Orig, Dig2Orig, 18);
 
                     List<long> Dig1List = ListTest[0];
                     List<long> Dig2List = ListTest[1];
@@ -997,7 +1083,7 @@ namespace RandomPassword
 
         }
 
-        public static int GetDigListBigger(List<long> Dig1List, List<long> Dig2List)
+        public static int ListBigger(List<long> Dig1List, List<long> Dig2List)
         {
             long DigsDiff = Dig1List.Count - Dig2List.Count;
 
@@ -1027,7 +1113,10 @@ namespace RandomPassword
             }
 
         }
+    }
 
+    class CalcConvert
+    {
         public static List<List<long>> StringsToLongLists(string Dig1Orig, string Dig2Orig, int FragLength)
         {
             List<List<long>> MyOutput = new();
@@ -1167,19 +1256,5 @@ namespace RandomPassword
 
     }
 
-    public static class StringExt
-    {
-        public static string Left(this string @this, int count)
-        {
-            if (@this.Length <= count)
-            {
-                return @this;
-            }
-            else
-            {
-                return @this.Substring(0, count);
-            }
-        }
-    }
 }
 
