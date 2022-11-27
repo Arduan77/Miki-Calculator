@@ -13,5 +13,3 @@ In addision, using Miki-Calculator you can generate pseudo-random passwords from
 To generate passwords I used Lehmer algorithm.
 
 I will be grateful for your feedback and any help in developing the program.
-
-arduan77@gmail.com
